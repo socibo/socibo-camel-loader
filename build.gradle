@@ -1,0 +1,95 @@
+group='co.socibo'
+version='0.1-SNAPSHOT'
+
+
+
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: "com.bmuschko.tomcat-base"
+//apply plugin: 'tomcat'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+ant.property (file : 'build.properties')
+
+repositories {
+    mavenLocal()
+    maven {
+        url {
+            'http://maven.springframework.org/release'
+            'http://maven.springframework.org/milestone'
+            'http://maven.springframework.org/snapshot'
+            'http://download.java.net/maven/2'
+            'http://plugins.gradle.org/m2/'
+        }
+    }
+
+
+    mavenCentral()
+}
+
+configurations {
+    all*.exclude group: 'commons-logging'
+}
+
+dependencies {
+
+    runtime "com.bmuschko:gradle-tomcat-plugin:2.2.2"
+    
+    compile "org.codehaus.groovy:groovy:${groovyVersion}",
+            'joda-time:joda-time:1.6',
+            'commons-cli:commons-cli:1.2',
+            "org.springframework:spring-beans:${springVersion}",
+
+            "org.springframework:spring-webmvc:${springVersion}",
+            "org.springframework:spring-jdbc:${springVersion}",
+            "org.springframework.social:spring-social-config:${springSocialVersion}",
+            "org.springframework.social:spring-social-core:${springSocialVersion}",
+            "org.springframework.social:spring-social-web:${springSocialVersion}",
+            "org.springframework.security:spring-security-crypto:${springSecurityVersion}",
+
+            "org.springframework.social:spring-social-facebook:${springSocialFacebookVersion}",
+            "org.springframework.social:spring-social-twitter:${springSocialTwitterVersion}",
+
+            "org.apache.camel:camel-core:${camelVersion}",
+            "org.apache.camel:camel-http:${camelVersion}",
+            "org.apache.camel:camel-quartz:${camelVersion}",
+            "org.apache.camel:camel-groovy:${camelVersion}",
+            "org.apache.camel:camel-spring:${camelVersion}",
+            "org.apache.camel:camel-mongodb:${camelVersion}",
+
+            "org.springframework:spring-core:${springVersion}",
+            "org.springframework:spring-context:${springVersion}",
+
+            "org.thymeleaf:thymeleaf-spring4:${thymeleafVersion}",
+            "com.h2database:h2:${h2Version}",
+            "javax.servlet:javax.servlet-api:${servletApiVersion}",
+            "cglib:cglib-nodep:${cglibVersion}",
+
+            "org.apache.httpcomponents:httpclient:${httpclientVersion}",
+            "org.slf4j:slf4j-api:${slf4jVersion}",
+            "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
+            "org.slf4j:slf4j-log4j12:${slf4jVersion}",
+            "log4j:log4j:${log4jVersion}",
+            "javax.inject:javax.inject:${javaxInjectVersion}",
+
+            'ch.qos.logback:logback-classic:0.9.21',
+            'ch.qos.logback:logback-core:0.9.21',
+            'org.slf4j:jcl-over-slf4j:1.6.0',
+            'org.slf4j:slf4j-api:1.6.0'
+
+    testCompile 'junit:junit:4.8.1',
+            "org.apache.camel:camel-test:${camelVersion}"
+}
+
+
+task run(dependsOn:'build') << {
+    ant.java(classname: 'co.socibo.Main', classpath: sourceSets.main.runtimeClasspath.asPath) {
+        arg(value: "--account")
+        arg(value: "${ant.properties.'twitter.account'}")
+        arg(value: "--password")
+        arg(value: "${ant.properties.'twitter.password'}")
+    }
+}

@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://camel.apache.org/schema/spring
+  http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+  <camelContext id="mainCamelContext" autoStartup="false" xmlns="http://camel.apache.org/schema/spring">
+
+    <packageScan>
+      <package>co.socibo.beans</package>
+    </packageScan>
+
+    <route>
+      <from uri="quartz://myGroup/myTimerName?trigger.repeatInterval=2000&amp;trigger.repeatCount=10"/>
+      <log message="Test context message"/>
+    </route>
+
+  </camelContext>
+
+</beans>

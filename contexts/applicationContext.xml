@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:facebook="http://www.springframework.org/schema/social/facebook"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://camel.apache.org/schema/spring
+  http://camel.apache.org/schema/spring/camel-spring.xsd
+  http://www.springframework.org/schema/social/facebook
+  http://www.springframework.org/schema/social/spring-social-facebook.xsd">
+
+    <facebook:config app-id="${facebook.clientId}"
+                     app-secret="${facebook.clientSecret}"
+                     app-namespace="socialshowcase" />
+
+
+    <camelContext id="mainCamelContext" xmlns="http://camel.apache.org/schema/spring">
+
+    <packageScan>
+      <package>co.socibo.beans</package>
+    </packageScan>
+
+    <route>
+      <from uri="quartz://myGroup/myTimer?trigger.repeatCount=1"/>
+      <log message="Test context message changed"/>
+        <bean ref="facebook" method=""/>
+    </route>
+
+  </camelContext>
+
+</beans>

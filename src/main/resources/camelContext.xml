@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+  http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://camel.apache.org/schema/spring
+  http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+  <bean id="contextLoader" class="co.socibo.beans.ContextLoader"/>
+
+  <camelContext id="mainCamelContext" xmlns="http://camel.apache.org/schema/spring">
+
+      <packageScan>
+          <package>co.socibo.beans</package>
+      </packageScan>
+
+      <route id="contextListener">
+          <from uri="file:contexts"/>
+          <pipeline>
+              <bean ref="contextLoader" method="load"/>
+              <log loggingLevel="WARN" message="New context started at ${date:now:yyyy.MM.dd G 'at' HH:mm:ss z}"/>
+          </pipeline>
+      </route>
+
+  </camelContext>
+
+</beans>

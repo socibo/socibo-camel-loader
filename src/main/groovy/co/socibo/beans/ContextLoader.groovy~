@@ -1,0 +1,9 @@
+package co.socibo.beans
+
+import org.apache.camel.Exchange
+
+class ContextLoader {
+  def load = { Exchange ex ->
+   println ex.in.headers.CamelFileName 
+  }
+}

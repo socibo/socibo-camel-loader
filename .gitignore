@@ -1,0 +1,11 @@
+.classpath
+.classpath.old
+.project
+.DS_Store
+build.properties
+.gradle/
+.settings/
+target/
+bin/
+build/
+log/
